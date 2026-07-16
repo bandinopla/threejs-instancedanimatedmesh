@@ -63,6 +63,10 @@ const character = imesh.getInstance(); //returns a handy Object3D that acts as t
 character.gotoAndPlay("idle"); // will play and loop...
 character.gotoAndPlay("Breathing", { channel:"decorative" });
 character.getBone("BoneHandBone").add(swordObject); // easily add stuff to the bones of this instance 
+
+// IMPORTANT: if you change position, scale or rotation, call this: 
+character.needsUpdate = true; // so the instance position gets updated, otherwise you will the the instance not moving at all, frozen in space.
+
 ```
 
 ## Play once vs loop
