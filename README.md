@@ -74,7 +74,11 @@ character.needsUpdate = true; // so the instance position gets updated, otherwis
 - `gotoAndPlay` : will loop
 
 ## Additive clips
-Make sure the `AnimationClip`has a `userData.additive` set to true. And when playing them, you will want them to run on channels different from the main one, you do that by doing:
+Make sure the `AnimationClip`has a `userData.additive` set to true 
+
+> In blender terms, you go to the properties of the animation clip in the Action Editor and create in the custom properties side pannel a boolean property called "additive" and set it to true. Don't forget to ckeck the "export custom properties" in the GLB exporter settings or whatever other format you use...
+
+And when playing them, you will want them to run on channels different from the main one, you do that by doing:
 ```js
 character.gotoAndPlay("Breathing", { channel:"decorative" });
 ```
