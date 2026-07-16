@@ -3,7 +3,6 @@ import path from "path";
 import dts from "vite-plugin-dts";
 
 export default defineConfig({
-	base: "/threejs-instancedanimatedmesh/",
 	plugins: [
 		dts({
 			tsconfigPath: path.resolve(__dirname, "tsconfig.lib.json"),
