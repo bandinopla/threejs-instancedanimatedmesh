@@ -1,4 +1,7 @@
 ![Cover Image](cover.png)
+
+Play demo: [https://bandinopla.github.io/threejs-instancedanimatedmesh/](https://bandinopla.github.io/threejs-instancedanimatedmesh/)
+
 # Animated Mesh
 
 Wrapper with some sintax sugar around threejs example [webgpu_skinning_instancing_individual](https://github.com/mrdoob/three.js/pull/33644) originally done by [RenaudRohlinger](https://github.com/RenaudRohlinger) to allow the instancing of multiple animated skinned meshes. All instances share one skeleton but can play diferent animations.
