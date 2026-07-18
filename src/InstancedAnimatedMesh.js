@@ -78,9 +78,20 @@ export class InstancedAnimatedMesh extends THREE.Object3D {
 		});
 		this._skinnedMeshes = skinnedMeshes;
 
+
 		clips = clips.map(c => {
 			if (c.userData.additive) {
-				const clone = THREE.AnimationUtils.makeClipAdditive(c.clone(), 1);
+				let refFrame = 1;
+				let refClip = undefined;
+
+				if (typeof c.userData.additive == "string") {
+					refClip = clips.find(_c => _c.name == c.userData.additive);
+					if (!refClip) {
+						throw new Error(`Additive clip "${c.name}": points to ref clip "${c.userData.additive}" not found`)
+					}
+				}
+
+				const clone = THREE.AnimationUtils.makeClipAdditive(c.clone(), refFrame, refClip);
 				clone.name = c.name;
 				return clone;
 			}

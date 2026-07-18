@@ -74,7 +74,10 @@ character.needsUpdate = true; // so the instance position gets updated, otherwis
 - `gotoAndPlay` : will loop
 
 ## Additive clips
-Make sure the `AnimationClip`has a `userData.additive` set to true 
+Make sure the `AnimationClip`has either `userData.additive` set to:
+
+- `true` ( in that case the reference frame will be frame 1 of that clip ) 
+- OR set it to the name of the clip you want to use as reference pose (frame 1 of that clip will be used)  
 
 > In blender terms, you go to the properties of the animation clip in the Action Editor and create in the custom properties side pannel a boolean property called "additive" and set it to true. Don't forget to ckeck the "export custom properties" in the GLB exporter settings or whatever other format you use...
 
