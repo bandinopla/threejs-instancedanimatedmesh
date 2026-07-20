@@ -617,9 +617,9 @@ export class InstancedAnimatedMesh extends THREE.Object3D {
 			material.normalNode = TBN.mul(scaledMapN).normalize();
 
 		} else {
-			// Fallback if there is no normal map texture
-			// material.normalNode = instanceNormal;
-			material.normalNode = transformNormalToView(vertices.element(meshVertex.add(uint(1))).xyz).toVarying();
+			// Fallback if there is no normal map texture 
+			//material.normalNode = transformNormalToView(vertices.element(meshVertex.add(uint(1))).xyz).toVarying();
+			material.normalNode = instanceNormal;
 		}
 
 
