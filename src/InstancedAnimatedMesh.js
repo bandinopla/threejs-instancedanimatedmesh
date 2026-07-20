@@ -309,6 +309,7 @@ export class InstancedAnimatedMesh extends THREE.Object3D {
 		let updatedCount = 0;
 
 		let lastBoneMatrix = null;
+		let visibilityChanged = false;
 
 		for (let i = 0; i < (this._nextIndex ?? 0); i++) {
 
@@ -318,13 +319,15 @@ export class InstancedAnimatedMesh extends THREE.Object3D {
 			const instance = this._pool[i];
 			if (!instance || instance._free) continue;
 
-			if (instance.needsUpdate)
-				console.log("Instance visible", i, instance.visible);
-
 			anythingUpdated = true;
+			visibilityChanged = this._lastVisible.get(instance) !== instance.visible;
+
+			if (!visibilityChanged && !instance.visible) continue;
+
+
 			updatedCount++;
 
-			if (instance.needsUpdate || this._lastVisible.get(instance) !== instance.visible) {
+			if (instance.needsUpdate || visibilityChanged) {
 
 				if (!instance.visible) {
 					this.setMatrix(i, hiddenMatrix);
