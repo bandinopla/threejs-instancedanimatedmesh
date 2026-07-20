@@ -67,6 +67,9 @@ character.getBone("BoneHandBone").add(swordObject); // easily add stuff to the b
 // IMPORTANT: if you change position, scale or rotation, call this: 
 character.needsUpdate = true; // so the instance position gets updated, otherwise you will the the instance not moving at all, frozen in space.
 
+// hide
+character.visible = false; // will hide the instance. (it will place it off screen and won't update it's animation)
+
 ```
 
 ## Play once vs loop
