@@ -10,7 +10,7 @@ import * as THREE from "three/webgpu";
 export class InstancedAnimatedMeshMixer {
 
 
-	/** @type {Map<number, PlayConfig["frameScript"]>} */
+	/** @type {Map<number, Record<string, PlayConfig["frameScript"]>>} */
 	instanceFrameListeners;
 
 	/**
@@ -105,13 +105,17 @@ export class InstancedAnimatedMeshMixer {
 		const { loop = true, crossfadeDuration = 0, weight = 1, timeScale = 1, channel = "main" } = config;
 
 		//remove old listeners
-		if (channel === "main") {
-			this.instanceFrameListeners.delete(instanceIndex);
-		}
 
-		if (config.frameScript && channel === "main") {
-			this.instanceFrameListeners.set(instanceIndex, config.frameScript);
+
+		const listeners = this.instanceFrameListeners.get(instanceIndex) ?? {};
+
+		if (config.frameScript) {
+			listeners[channel] = config.frameScript;
 		}
+		else {
+			delete listeners[channel];
+		}
+		this.instanceFrameListeners.set(instanceIndex, listeners);
 
 		// Find existing track
 		let existingIdx = -1;
@@ -297,7 +301,9 @@ export class InstancedAnimatedMeshMixer {
 	_execFrameScript(instanceIndex, action, track, emitComplete = false) {
 		const clip = action.getClip();
 		const scripts = this.frameScripts.get(clip);
-		const frameScript = this.instanceFrameListeners.get(instanceIndex);
+		const frameScript = this.instanceFrameListeners.get(instanceIndex)[track.channel];
+
+		if (!frameScript) return;
 
 		let lastTime = track.lastEvalTime ?? 0;
 		let currTime = track.time;
