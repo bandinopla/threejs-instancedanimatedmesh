@@ -21,6 +21,7 @@ import {
 	vertexIndex,
 } from "three/tsl";
 import { InstancedAnimatedMeshMixer } from "./InstancedAnimatedMeshMixer.js";
+import { hiddenMatrix } from "./hiddenMatrix.js";
 
 const _mat4 = new THREE.Matrix4();
 const _mat4b = new THREE.Matrix4();
@@ -56,6 +57,8 @@ export class InstancedAnimatedMesh extends THREE.Object3D {
 	 * @type {(idx:number)=>boolean}
 	 */
 	canUpdateInstance;
+
+	_lastVisible = new WeakMap();
 
 	/**
 	 * @param {THREE.Object3D} rig  — all skinned meshes sharing one skeleton
@@ -315,13 +318,24 @@ export class InstancedAnimatedMesh extends THREE.Object3D {
 			const instance = this._pool[i];
 			if (!instance || instance._free) continue;
 
+			if (instance.needsUpdate)
+				console.log("Instance visible", i, instance.visible);
+
 			anythingUpdated = true;
 			updatedCount++;
 
-			if (instance.needsUpdate) {
-				instance.updateMatrixWorld(true);
-				this.setMatrix(i, instance.matrixWorld);
+			if (instance.needsUpdate || this._lastVisible.get(instance) !== instance.visible) {
+
+				if (!instance.visible) {
+					this.setMatrix(i, hiddenMatrix);
+				}
+				else {
+					instance.updateMatrixWorld(true);
+					this.setMatrix(i, instance.matrixWorld);
+				}
+
 				instance.needsUpdate = false;
+				this._lastVisible.set(instance, instance.visible);
 			}
 
 			const idx = instance.idx;
